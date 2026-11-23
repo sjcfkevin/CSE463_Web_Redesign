@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mars Men Ignite Checkout Redesign (Prototype)</title>
+<style>
+:root{--ink:#14110a;--muted:#5d594d;--line:#ddd8c8;--bg:#faf9f4;--yellow:#ffd60a;--yellow-d:#e6bd00;--red:#b3261e;--green:#1d6b3a;--card:#fff}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--bg);line-height:1.45}
+.bar{background:#14110a;color:#fff;padding:8px 16px;display:flex;justify-content:space-between;align-items:center;font-size:13px;position:sticky;top:0;z-index:5}
+.bar b{color:var(--yellow)}
+.bar button{background:transparent;border:1px solid #888;color:#fff;border-radius:6px;padding:5px 10px;cursor:pointer;font-size:13px}
+.bar button:hover{border-color:#fff}
+header.site{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;max-width:1000px;margin:0 auto}
+.logo{font-weight:800;letter-spacing:3px;font-size:18px}
+.logo span{color:#e8590c}
+.steps{display:flex;gap:6px;font-size:12px;color:var(--muted)}
+.steps span{padding:3px 9px;border-radius:99px;border:1px solid var(--line);background:#fff}
+.steps .on{background:var(--ink);color:#fff;border-color:var(--ink)}
+main{max-width:1000px;margin:0 auto;padding:8px 24px 48px}
+h1{font-size:28px;margin:8px 0 6px}
+h2{font-size:18px;margin:22px 0 8px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.grid2{display:grid;grid-template-columns:1.5fr 1fr;gap:28px;align-items:start}
+@media(max-width:760px){.grid,.grid2{grid-template-columns:1fr}}
+.pack{background:linear-gradient(160deg,#1b1608,#3a2e07);border-radius:16px;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;color:#fff;position:relative;overflow:hidden}
+.can{width:44%;height:62%;background:#111;border:2px solid var(--yellow);border-radius:10px;padding:14px 10px;text-align:center}
+.can small{display:block;color:var(--yellow);font-weight:700;margin-top:30px;font-size:20px}
+.can i{font-style:normal;letter-spacing:3px;font-weight:800;font-size:12px}
+.can em{display:block;font-style:normal;font-size:11px;margin-top:6px;color:#ddd}
+.opt{display:block;width:100%;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:12px 14px;margin:8px 0;cursor:pointer;font:inherit;color:inherit}
+.opt:hover{border-color:#aaa}
+.opt[aria-pressed=true]{border-color:var(--ink);box-shadow:0 0 0 2px var(--yellow)}
+.opt .t{font-weight:700;display:flex;justify-content:space-between;gap:10px}
+.opt .d{font-size:14px;color:var(--muted);margin-top:3px}
+.tag{font-size:12px;background:#eee9d4;border-radius:6px;padding:2px 7px;font-weight:600}
+.tag.out{background:#f9dedc;color:var(--red)}
+.btn{background:var(--yellow);border:2px solid var(--ink);border-radius:10px;padding:13px 18px;font:inherit;font-weight:800;cursor:pointer;width:100%;margin-top:10px;color:var(--ink)}
+.btn:hover{background:var(--yellow-d)}
+.btn:disabled{background:#e9e6d9;border-color:#bbb;color:#888;cursor:not-allowed}
+.btn.sec{background:#fff}
+.btn.sec:hover{background:#f1efe4}
+.link{background:none;border:0;color:#0b57d0;text-decoration:underline;cursor:pointer;font:inherit;padding:0}
+.hint{font-size:14px;color:var(--muted);margin-top:6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.row{display:flex;justify-content:space-between;gap:12px;padding:6px 0}
+.row.total{border-top:2px solid var(--ink);margin-top:8px;padding-top:12px;font-weight:800;font-size:18px}
+.line{display:flex;gap:14px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
+.line:last-child{border-bottom:0}
+.thumb{width:64px;height:64px;border-radius:10px;background:#1b1608;border:2px solid var(--yellow);flex:none}
+label{display:block;font-size:14px;font-weight:700;margin:12px 0 4px}
+input{width:100%;padding:11px;border:2px solid var(--line);border-radius:8px;font:inherit}
+input:focus{outline:3px solid #ffe97a;border-color:var(--ink)}
+input.bad{border-color:var(--red)}
+.err{color:var(--red);font-size:13px;margin-top:3px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.three{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px}
+.alert{border:2px solid var(--red);background:#fdf0ef;border-radius:12px;padding:16px;margin:10px 0 16px}
+.alert h2{margin:0 0 6px;color:var(--red)}
+.ok{border:2px solid var(--green);background:#eef8f1;border-radius:12px;padding:12px 14px;margin:10px 0;color:#14452a;font-size:15px}
+.kept{font-size:14px;color:var(--muted);margin:8px 0 0}
+.kept li{margin:2px 0}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline}
+.hl{background:#fff4b8;border-radius:6px;padding:0 4px}
+.check{font-size:44px;width:76px;height:76px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;margin:6px 0 10px}
+small.note{display:block;color:var(--muted);font-size:12px;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="bar"><div>PROTOTYPE &middot; Ignite checkout redesign &middot; Current state: <b id="sid">S1</b></div><button id="resetBtn" type="button">Reset prototype</button></div>
+<header class="site"><div class="logo">MARS MEN<span>&bull;</span></div><div class="steps" id="steps"></div></header>
+<main id="app"></main>
+
+<script>
+const FL={orange:'Intergalactic Orange',berry:'Cosmic Berry'};
+const PL={once:{name:'One-time purchase',price:59},sub:{name:'Subscribe and save',price:39}};
+const TAX=0.08;
+const init=()=>({screen:'S1',flavor:null,plan:null,ret:'S2',errs:{},updated:false,
+ f:{name:'Alex Rivera',email:'alex.rivera@example.com',addr:'123 Sample Street',city:'Tempe',st:'AZ',zip:'85281',card:'4242 4242 4242 4242',exp:'12/29',cvc:'123'}});
+let S=init();
+const $=s=>document.querySelector(s);
+const money=n=>'$'+n.toFixed(2);
+const calc=()=>{const p=S.plan?PL[S.plan].price:0;const tax=Math.round(p*TAX*100)/100;return{p,tax,total:p+tax}};
+const STEPS=['Choose','Cart','Details','Review','Done'];
+const stepOf={S1:0,S3:0,S2:1,S4:2,S5:3,S6:3,S7:3,S8:4};
+const TITLES={S1:'S1 Product',S2:'S2 Cart',S3:'S3 Edit selection',S4:'S4 Delivery and payment',S5:'S5 Final review',S6:'S6 Sold out (recovery)',S7:'S7 Final review (updated)',S8:'S8 Order placed'};
+
+function flavorCards(){
+ return Object.keys(FL).map(k=>`<button type="button" class="opt" data-act="flavor" data-v="${k}" aria-pressed="${S.flavor===k}"><div class="t"><span>${FL[k]}</span><span class="tag">Sugar free</span></div><div class="d">15 stick packs, about 15 servings</div></button>`).join('');
+}
+function planCards(){
+ return `<button type="button" class="opt" data-act="plan" data-v="once" aria-pressed="${S.plan==='once'}"><div class="t"><span>One-time purchase</span><span>$59.00</span></div><div class="d">Ships once. No repeat charges. Nothing to cancel.</div></button>
+ <button type="button" class="opt" data-act="plan" data-v="sub" aria-pressed="${S.plan==='sub'}"><div class="t"><span>Subscribe and save</span><span>$39.00 today</span></div><div class="d">Then $49.00 every 4 weeks until you cancel. Skip, pause, or cancel anytime. Next charge: Dec 20.</div></button>`;
+}
+function summary(editable){
+ const c=calc();
+ const edit=editable?`<button type="button" class="link" data-act="edit">Change</button>`:'';
+ return `<div class="card"><div class="sec-h"><b>Your order</b>${edit}</div>
+ <div class="line"><div class="thumb"></div><div><b>Ignite Focus + Cognition</b><br>15 stick packs<br>Flavor: <b>${FL[S.flavor]}</b><br>Option: <b>${PL[S.plan].name}</b></div></div>
+ <div class="row"><span>Item</span><span>${money(c.p)}</span></div>
+ <div class="row"><span>Shipping</span><span>Free</span></div>
+ <div class="row"><span>Estimated tax</span><span>${money(c.tax)}</span></div>
+ <div class="row total"><span>Total today</span><span>${money(c.total)}</span></div>
+ ${S.plan==='sub'?'<p class="hint">Then $49.00 every 4 weeks. Next charge Dec 20. Cancel anytime.</p>':'<p class="hint">One-time purchase. You will not be charged again.</p>'}</div>`;
+}
+
+function render(){
+ const sc=S.screen;$('#sid').textContent=TITLES[sc];
+ $('#steps').innerHTML=STEPS.map((s,i)=>`<span class="${i===stepOf[sc]?'on':''}">${i+1} ${s}</span>`).join('');
+ let h='';
+ if(sc==='S1'){
+  h=`<div class="grid"><div class="pack"><div class="can"><i>MARS MEN</i><small>Ignite</small><em>Focus + Cognition</em></div></div>
+  <div><h1>Ignite Focus + Cognition</h1><p>Sugar free focus stick packs. 15 sticks per box. 80 mg caffeine per stick. Not for children, pregnant or nursing women, or anyone sensitive to caffeine.</p>
+  <h2>1. Pick a flavor</h2>${flavorCards()}
+  <h2>2. Pick how you want to buy</h2>${planCards()}
+  <button class="btn" id="addBtn" data-act="add" ${S.flavor&&S.plan?'':'disabled'}>Add to cart</button>
+  <p class="hint">${S.flavor&&S.plan?'You will see the full price and any repeat charges in your cart before paying.':'Choose a flavor and a buying option to continue.'}</p></div></div>`;
+ }
+ if(sc==='S2'){
+  h=`<h1>Your cart</h1><div class="grid2"><div>${summary(true)}
+  <button class="btn" data-act="toCheckout">Continue to delivery and payment</button>
+  <button class="btn sec" data-act="toS1">Keep shopping</button></div>
+  <div class="card"><b>What happens next</b><p class="hint">1. Enter delivery and payment info.<br>2. Review everything one more time.<br>3. Place your order. You are not charged until step 3.</p></div></div>`;
+ }
+ if(sc==='S3'){
+  h=`<h1>Change your selection</h1><p class="hint">Your delivery and payment info will stay saved.</p>
+  <div style="max-width:560px"><h2>Flavor</h2>${flavorCards()}<h2>Buying option</h2>${planCards()}
+  <button class="btn" data-act="saveEdit" ${S.flavor&&S.plan?'':'disabled'}>Save changes</button><button class="btn sec" data-act="cancelEdit">Cancel</button></div>`;
+ }
+ if(sc==='S4'){
+  const f=S.f,e=S.errs;const fld=(k,l,t)=>`<div><label for="${k}">${l}</label><input id="${k}" data-f="${k}" value="${f[k]}" class="${e[k]?'bad':''}" ${t||''}>${e[k]?`<div class="err" role="alert">${e[k]}</div>`:''}</div>`;
+  h=`<h1>Delivery and payment</h1><div class="grid2"><div class="card">
+  ${Object.keys(e).length?'<div class="alert" style="margin-top:0"><b>Please fix the highlighted fields.</b> Everything else you entered is saved.</div>':''}
+  <b>Contact</b>${fld('name','Full name')}${fld('email','Email')}
+  <b style="display:block;margin-top:18px">Ship to</b>${fld('addr','Street address')}
+  <div class="three">${fld('city','City')}${fld('st','State')}${fld('zip','ZIP code')}</div>
+  <b style="display:block;margin-top:18px">Payment</b>${fld('card','Card number')}
+  <div class="two">${fld('exp','Expires (MM/YY)')}${fld('cvc','Security code')}</div>
+  <small class="note">Prototype only. Use fictional info. No real payment is processed.</small>
+  <button class="btn" data-act="toReview">Review my order</button><button class="btn sec" data-act="toS2">Back to cart</button></div>
+  <div>${summary(true)}</div></div>`;
+ }
+ if(sc==='S5'||sc==='S6'||sc==='S7'){
+  const f=S.f;const c=calc();
+  let top='';
+  if(sc==='S6'){
+   top=`<div class="alert" role="alert"><h2>Cosmic Berry just sold out</h2><p style="margin:0 0 8px"><b>Your order was not placed and you were not charged.</b> We still have your cart, delivery info, and payment info saved.</p>
+   <button class="btn" data-act="switchOrange">Switch to Intergalactic Orange (same price, ${money(c.total)})</button>
+   <button class="btn sec" data-act="edit">Pick a different option</button>
+   <button class="btn sec" data-act="notify">Email me when Cosmic Berry is back</button>
+   <ul class="kept"><li>Kept: delivery address, payment info, buying option (${PL[S.plan].name})</li><li>Changes if you switch: flavor only</li></ul>
+   ${S.notified?'<p class="ok" style="margin-top:10px">Done. We will email alex.rivera@example.com when Cosmic Berry is back. Your cart is still here.</p>':''}</div>`;
+  }
+  if(sc==='S7') top=`<div class="ok" role="status"><b>Updated:</b> your flavor is now <span class="hl">${FL[S.flavor]}</span>. Nothing else changed. Check the details below, then place your order.</div>`;
+  h=`<h1>Review your order</h1>${top}<div class="grid2"><div>
+  <div class="card"><div class="sec-h"><b>Item</b><button class="link" data-act="edit">Change</button></div>
+   <p style="margin:6px 0">Ignite Focus + Cognition, 15 stick packs<br>Flavor: <b>${sc==='S6'?'<span style="color:var(--red)">'+FL[S.flavor]+' (sold out)</span>':FL[S.flavor]}</b><br>Buying option: <b>${PL[S.plan].name}</b></p></div>
+  <div class="card" style="margin-top:12px"><div class="sec-h"><b>Delivery</b><button class="link" data-act="toS4">Change</button></div>
+   <p style="margin:6px 0">${f.name}<br>${f.addr}, ${f.city}, ${f.st} ${f.zip}<br><b>Arrives Nov 27 to Nov 30</b> (free standard shipping)</p></div>
+  <div class="card" style="margin-top:12px"><div class="sec-h"><b>Payment</b><button class="link" data-act="toS4">Change</button></div>
+   <p style="margin:6px 0">Card ending in ${f.card.replace(/\D/g,'').slice(-4)}</p></div></div>
+  <div><div class="card"><b>Total</b>
+   <div class="row"><span>Item</span><span>${money(c.p)}</span></div><div class="row"><span>Shipping</span><span>Free</span></div><div class="row"><span>Estimated tax</span><span>${money(c.tax)}</span></div>
+   <div class="row total"><span>You will pay today</span><span>${money(c.total)}</span></div>
+   <p class="hint">${S.plan==='sub'?'Then $49.00 every 4 weeks starting Dec 20. Cancel anytime in Manage Subscription.':'One-time purchase. No repeat charges.'}</p>
+   <button class="btn" data-act="place">Place order</button><button class="btn sec" data-act="toS4">Back</button>
+   <small class="note">Simulated order. No real charge.</small></div></div></div>`;
+ }
+ if(sc==='S8'){
+  const c=calc();
+  h=`<div style="max-width:620px"><div class="check" aria-hidden="true">&#10003;</div><h1>Order placed. Thank you!</h1><p>Order <b>#MM-20418</b> is confirmed. We emailed a receipt to <b>${S.f.email}</b>.</p>
+  <div class="card"><b>Order summary</b><div class="line"><div class="thumb"></div><div>Ignite Focus + Cognition, 15 stick packs<br>Flavor: <b>${FL[S.flavor]}</b><br>Option: <b>${PL[S.plan].name}</b></div></div>
+  <div class="row"><span>Paid today</span><span>${money(c.total)}</span></div>
+  <div class="row"><span>Arrives</span><span><b>Nov 27 to Nov 30</b></span></div>
+  <div class="row"><span>Ships to</span><span>${S.f.addr}, ${S.f.city}, ${S.f.st}</span></div>
+  <div class="row"><span>Next charge</span><span><b>${S.plan==='sub'?'$49.00 on Dec 20 (cancel anytime)':'None. One-time purchase.'}</b></span></div></div>
+  <button class="btn sec" data-act="reset">Start over</button></div>`;
+ }
+ $('#app').innerHTML=h;window.scrollTo(0,0);
+}
+
+function validate(){
+ const f=S.f,e={};
+ ['name','addr','city','st'].forEach(k=>{if(!f[k].trim())e[k]='Please fill this in.'});
+ if(!/^\S+@\S+\.\S+$/.test(f.email))e.email='Enter an email like name@example.com.';
+ if(!/^\d{5}$/.test(f.zip.trim()))e.zip='ZIP code should be 5 digits.';
+ if(f.card.replace(/\D/g,'').length!==16)e.card='Card number should be 16 digits.';
+ if(!/^\d{2}\/\d{2}$/.test(f.exp.trim()))e.exp='Use MM/YY, like 12/29.';
+ if(!/^\d{3,4}$/.test(f.cvc.trim()))e.cvc='Enter the 3 or 4 digit code.';
+ return e;
+}
+const go=s=>{S.screen=s;render()};
+document.addEventListener('click',ev=>{
+ const el=ev.target.closest('[data-act]');if(!el||el.disabled)return;
+ const a=el.dataset.act,v=el.dataset.v;
+ if(a==='flavor'){S.flavor=v;render();}
+ else if(a==='plan'){S.plan=v;render();}
+ else if(a==='add')go('S2');
+ else if(a==='edit'){S.ret=S.screen==='S6'?'S5':S.screen;go('S3');}
+ else if(a==='saveEdit'){S.updated=false;go(S.ret==='S5'||S.ret==='S7'?S.ret:S.ret);}
+ else if(a==='cancelEdit')go(S.ret);
+ else if(a==='toCheckout'||a==='toS4'){S.errs={};go('S4');}
+ else if(a==='toS1')go('S1');
+ else if(a==='toS2')go('S2');
+ else if(a==='toReview'){S.errs=validate();if(Object.keys(S.errs).length)render();else go('S5');}
+ else if(a==='place'){S.notified=false;go(S.flavor==='berry'?'S6':'S8');}
+ else if(a==='switchOrange'){S.flavor='orange';go('S7');}
+ else if(a==='notify'){S.notified=true;render();}
+ else if(a==='reset'){S=init();render();}
+});
+document.addEventListener('input',ev=>{const k=ev.target.dataset&&ev.target.dataset.f;if(k){S.f[k]=ev.target.value;}});
+$('#resetBtn').addEventListener('click',()=>{S=init();render();});
+render();
+</script>
+</body>
+</html>
